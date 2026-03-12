@@ -21,14 +21,7 @@ sonarscan-job:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
   script:
-    - |
-      sonar-scanner \
-        -Dsonar.organization=ramprakash2102 \
-        -Dsonar.projectKey=Ramprakash2102_sonarqube-testing \
-        # -Dsonar.projectName="sonarqube-testing" \
-        -Dsonar.sources=. \
-        -Dsonar.host.url=https://sonarcloud.io \
-        -Dsonar.login=$SONAR_TOKEN
+    - sonar-scanner
   allow_failure: true
   only:
     - master
