@@ -1,5 +1,9 @@
 stages:          # List of stages for jobs, and their order of execution
   - build
+  - sonar
+
+variables:
+  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
@@ -7,3 +11,25 @@ build-job:       # This job runs in the build stage, which runs first.
   script:
     - echo "Compiling the code..."
     - echo "Compile complete."
+  only:
+    - master
+    - merge_requests
+
+sonarscan-job:
+  stage: sonar
+  image: 
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  script:
+    - |
+      sonar-scanner \
+        -Dsonar.organization=ramprakash2102 \
+        -Dsonar.projectKey=Ramprakash2102_sonarqube-testing \
+        # -Dsonar.projectName="sonarqube-testing" \
+        -Dsonar.sources=. \
+        -Dsonar.host.url=https://sonarcloud.io \
+        -Dsonar.login=$SONAR_TOKEN
+  allow_failure: true
+  only:
+    - master
+    - merge_requests
